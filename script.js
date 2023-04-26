@@ -1,91 +1,14 @@
-class Variant{
-  constructor(arr){
-    this.variantContainer = document.querySelector('.search__results');
-    this.arr = arr.forEach(element => {
-      const variant = this.createElement(element);
-      this.variantContainer.append(variant)
-    });
-  }
+import { Variant } from "./scripts/class/Variant.js";
+import { Card } from "./scripts/class/Card.js";
+import { Connection } from "./scripts/class/Connection.js";
 
-  createElement(name){
-    const elemnt = document.createElement('li');
-    elemnt.classList.add('search__result');
-    const span = document.createElement('span');
-    span.textContent = name
-    elemnt.append(span)
-    return elemnt;
-  }
-}
-
-class Card{
-  constructor(name, owner, stars){
-    this.cardContainer = document.querySelector('.card-container');
-    this.card = this.createElement(name, owner, stars);
-    this.cardContainer.append(this.card);
-  }
-
-  createElement(name, owner, stars){
-    const classNameSpan = ['card__username', 'card__owner', 'card__stars']
-    const info = [`Name: ${name}`, `Owner: ${owner}`, `Stars: ${stars}`]
-
-    const card = document.createElement('li');
-    card.classList.add('card');
-
-    const cardInfo = document.createElement('div');
-    cardInfo.classList.add('card__info');
-
-    for(let i=0; i<classNameSpan.length; i++){
-      const cardAddInfo = document.createElement('span');
-      cardAddInfo.classList.add(classNameSpan[i]);
-      cardAddInfo.textContent = info[i];
-      cardInfo.append(cardAddInfo);
-    }
-
-    const cardDelete = document.createElement('div');
-    cardDelete.classList.add('card__delete');
-
-    card.append(cardInfo);
-    card.append(cardDelete);
-    
-    return card;
-  }
-
-  static deleteElement(el){
-    el.remove()
-  }
-}
-
-class Connection{
-  constructor(arr){
-    this.arr = arr;
-  }
-
-  getClickedItem(name){
-    let index;
-    this.arr.forEach((e,i) => {
-      if(e.name === name){
-
-        index = i;
-      }
-    });
-    return index;
-  }
-}
+import { debounce } from "./scripts/debounce.js";
 
 const searchInput = document.querySelector('.search__input');
 const searchResults = document.querySelector('.search__results');
 const cardContainer = document.querySelector('.card-container');
 
 let connection;
-
-function debounce(fn, ms){
-  let timeout;
-  return function(){
-    const func = () => { fn.apply(this, arguments) };
-    clearTimeout(timeout);
-    timeout = setTimeout(func, ms)
-  }
-}
 
 async function renderFetch(text){
   if(text){
