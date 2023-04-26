@@ -1,0 +1,102 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.container{
+  background-color: #C4C4C4;
+  width: 660px;
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: center;
+  flex-flow: column;
+}
+
+.search{
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 10rem;
+}
+
+.search__input{
+  font-size: 21px;
+  padding: .5rem;
+  width: 100%;
+}
+
+.search__result{
+  background-color: #E3E3E3;
+  border: 1px black solid;
+  padding: .5rem;
+  cursor: pointer;
+}
+
+.search__result > span{
+  font-size: 18px;
+}
+
+.card{
+  height: 100px;
+  display: flex;
+  background-color: #E27BEB;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  position: relative;
+}
+
+.card__info{
+  display: flex;
+  flex-flow: column;
+  cursor: default;
+}
+
+.card__info > span{
+  font-size: 21px;
+}
+
+.card__delete{
+  cursor: pointer;
+  position: relative;
+  height: 3rem;
+  width: 3rem;
+}
+
+.card__delete::after,
+.card__delete::before{
+  content: '';
+  position: absolute;
+  height: 3rem;
+  width: 3px;
+  right: 50%;
+  background-color: red;
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.card__delete::before{
+  transform: rotate(-45deg);
+}
+
