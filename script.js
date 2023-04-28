@@ -10,6 +10,22 @@ const cardContainer = document.querySelector('.card-container');
 
 let connection;
 
+function createCard(evt){
+  const index = connection.getClickedItem(evt.target.innerText);
+  const element = connection.arr[index];
+  new Card(element.name, element.owner.login, element.stargazers_count);
+  cardContainer.addEventListener('click', deleteCard);
+}
+
+function deleteCard(evt){
+  if(evt.target.classList.value === 'card__delete'){
+    Card.deleteElement(evt.target.closest('li'));
+    if (!cardContainer.children.length) {
+      cardContainer.removeEventListener('click', deleteCard);
+    }
+  }
+}
+
 async function renderFetch(text){
   if(text){
     try {
@@ -28,6 +44,7 @@ async function renderInputValue(e){
   const keyWord = inputValue.toLowerCase().replace(/\s\b/g, '+');
   const result = await renderFetch(keyWord)
   if(result){
+    searchResults.addEventListener('click', createCard);
     connection = new Connection(result);
     const names = connection.arr.map(e => e.name);
     if(searchResults.children.length == 5){
@@ -35,24 +52,20 @@ async function renderInputValue(e){
     }
     new Variant(names)
   }else{
-    Array.from(searchResults.children).forEach(e => e.remove())
+    searchResults.removeEventListener('click', createCard);
+    Array.from(searchResults.children).forEach(e => e.remove());
   }
 }
 
 const renderInputValueDebounced = debounce(renderInputValue, 400);
 
-searchInput.addEventListener('keyup', renderInputValueDebounced);
+searchInput.addEventListener('input', renderInputValueDebounced);
 
-searchResults.addEventListener('click', (e) => {
-  const index = connection.getClickedItem(e.target.innerText);
-  const element = connection.arr[index];
-  new Card(element.name, element.owner.login, element.stargazers_count);
-});
 
-cardContainer.addEventListener('click', (e) => {
-  if(e.target.classList.value === 'card__delete'){
-    Card.deleteElement(e.target.closest('li'));
-  }
-})
+
+
+
+
+
 
 

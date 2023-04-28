@@ -37,7 +37,7 @@ main{
 .search{
   display: flex;
   flex-flow: column;
-  margin-bottom: 10rem;
+  margin-bottom: 3rem;
 }
 
 .search__input{
