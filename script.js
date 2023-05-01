@@ -45,13 +45,16 @@ async function renderInputValue(e){
   const inputValue = e.target.value;
   const keyWord = inputValue.toLowerCase().replace(/\s\b/g, '+');
   const result = await renderFetch(keyWord);
+
   if(result.length){
     searchResults.addEventListener('click', createCard);
     connection = new Connection(result);
     const names = connection.arr.map(e => e.name);
+
     if(searchResults.children.length == 5){
       Array.from(searchResults.children).forEach(e => e.remove());
     }
+
     new Variant(names);
     renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', false);
   }else{
