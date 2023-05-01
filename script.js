@@ -33,19 +33,21 @@ async function renderFetch(text){
       const url = `https://api.github.com/search/repositories?q=${text}&sort=stars&order=desc&per_page=5`;
       const response = await fetch(url);
       const {items: result} = await response.json();
-      return result;
+      return [result, text];
     } catch (error) {
       throw new Error(error.message);
     }
   }
-  return [];
+
+  renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', false);
+  return [[], text]
 }
 
 async function renderInputValue(e){
   const inputValue = e.target.value;
   const keyWord = inputValue.toLowerCase().replace(/\s\b/g, '+');
-  const result = await renderFetch(keyWord);
-
+  const [result, text] = await renderFetch(keyWord);
+  
   if(result.length){
     searchResults.addEventListener('click', createCard);
     connection = new Connection(result);
@@ -60,7 +62,11 @@ async function renderInputValue(e){
   }else{
     searchResults.removeEventListener('click', createCard);
     Array.from(searchResults.children).forEach(e => e.remove());
-    renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', true);
+
+    if(text){
+      renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', true);
+    }
+    
   }
 }
 
