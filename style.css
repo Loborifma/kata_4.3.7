@@ -25,6 +25,17 @@ main{
   right: 0;
 }
 
+.visually-hidden {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	padding: 0 !important;
+	border: 0 !important;
+	height: 1px !important;
+	width: 1px !important;
+	overflow: hidden;
+}
+
 .container{
   background-color: #C4C4C4;
   width: 660px;
@@ -32,6 +43,15 @@ main{
   display: flex;
   justify-content: center;
   flex-flow: column;
+}
+
+.error{
+  border: 2px solid red;
+}
+
+.error-message{
+  font-size: 1.25rem;
+  color: red;
 }
 
 .search{

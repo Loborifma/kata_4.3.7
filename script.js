@@ -2,9 +2,10 @@ import { Variant } from "./scripts/class/Variant.js";
 import { Card } from "./scripts/class/Card.js";
 import { Connection } from "./scripts/class/Connection.js";
 
-import { debounce } from "./scripts/debounce.js";
+import { debounce, renderErrorVisualise } from "./scripts/common-func.js";
 
 const searchInput = document.querySelector('.search__input');
+const errorMessage = document.querySelector('.error-message');
 const searchResults = document.querySelector('.search__results');
 const cardContainer = document.querySelector('.card-container');
 
@@ -29,31 +30,34 @@ function deleteCard(evt){
 async function renderFetch(text){
   if(text){
     try {
-      const url = `https://api.github.com/search/repositories?q=${text}&sort=stars&order=desc&per_page=5`
-      const response = await fetch(url)
+      const url = `https://api.github.com/search/repositories?q=${text}&sort=stars&order=desc&per_page=5`;
+      const response = await fetch(url);
       const {items: result} = await response.json();
       return result;
     } catch (error) {
-      throw new Error(error.message)
+      throw new Error(error.message);
     }
   }
+  return [];
 }
 
 async function renderInputValue(e){
-  const inputValue = e.target.value
+  const inputValue = e.target.value;
   const keyWord = inputValue.toLowerCase().replace(/\s\b/g, '+');
-  const result = await renderFetch(keyWord)
-  if(result){
+  const result = await renderFetch(keyWord);
+  if(result.length){
     searchResults.addEventListener('click', createCard);
     connection = new Connection(result);
     const names = connection.arr.map(e => e.name);
     if(searchResults.children.length == 5){
-      Array.from(searchResults.children).forEach(e => e.remove())
+      Array.from(searchResults.children).forEach(e => e.remove());
     }
-    new Variant(names)
+    new Variant(names);
+    renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', false);
   }else{
     searchResults.removeEventListener('click', createCard);
     Array.from(searchResults.children).forEach(e => e.remove());
+    renderErrorVisualise(searchInput, errorMessage, 'error', 'visually-hidden', true);
   }
 }
 
